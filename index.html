@@ -134,16 +134,16 @@
     <!-- Firebase Initialization -->
     <script>
       // ==========================================
-      // FIREBASE CONFIGURATION (REPLACE WITH YOURS!)
+      // FIREBASE CONFIGURATION (YOUR LIVE SETTINGS)
       // ==========================================
       const firebaseConfig = {
-        apiKey: "YOUR_API_KEY",
-        authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-        databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-        projectId: "YOUR_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT_ID.appspot.com",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_APP_ID"
+        apiKey: "AIzaSyBkQ2QuJQENGg_7X0Pio4leVg7ap3O3zgk",
+        authDomain: "drays-arcade.firebaseapp.com",
+        databaseURL: "https://drays-arcade-default-rtdb.firebaseio.com",
+        projectId: "drays-arcade",
+        storageBucket: "drays-arcade.firebasestorage.app",
+        messagingSenderId: "1098811752785",
+        appId: "1:1098811752785:web:bbdb394277fd7267879370"
       };
 
       let database = null;
@@ -151,7 +151,7 @@
         firebase.initializeApp(firebaseConfig);
         database = firebase.database();
       } catch (err) {
-        console.warn("Firebase is not configured correctly yet. Announcements will not work until you add your config block.", err);
+        console.warn("Firebase failed to initialize.", err);
       }
     </script>
   </head>
@@ -477,7 +477,7 @@
                   
                   <div class="relative z-10">
                     <label class="block text-theme-muted text-xs font-bold mb-3 uppercase tracking-wider">Broadcast Message</label>
-                    <textarea id="admin-announcement-input" class="w-full bg-theme-bg border border-theme-text/20 rounded-xl p-4 text-theme-text mb-4 h-32 focus:border-theme-accent outline-none focus:ring-1 focus:ring-theme-accent transition-all resize-none placeholder-theme-muted/50" placeholder="Type an announcement to broadcast to all players..."></textarea>
+                    <textarea id="admin-announcement-input" class="w-full bg-theme-bg border border-theme-text/20 rounded-xl p-4 text-theme-text mb-4 h-32 focus:border-theme-accent outline-none focus:ring-1 focus:ring-theme-accent transition-all resize-none placeholder-theme-muted/50" placeholder="Type an announcement to broadcast to all players... (Delete text and save to hide banner)"></textarea>
                     
                     <button id="btn-publish-announcement" class="w-full bg-theme-accent text-theme-bg font-bold py-3 rounded-xl shadow-[0_0_15px_rgb(var(--theme-accent)/0.3)] hover:bg-theme-text transition-colors flex items-center justify-center gap-2">
                       <i data-lucide="send" class="w-4 h-4"></i> Publish Announcement
@@ -678,7 +678,7 @@
       // Admin Publish Logic
       document.getElementById('btn-publish-announcement').addEventListener('click', () => {
         if (!database) {
-          alert("Firebase is not initialized! Please setup your config block in the code.");
+          alert("Firebase is not initialized! Check your config.");
           return;
         }
         
@@ -690,7 +690,7 @@
             setTimeout(() => msg.classList.add('hidden'), 3000);
           })
           .catch(err => {
-            alert("Error saving announcement: " + err.message + "\nMake sure your Realtime Database rules allow writing!");
+            alert("Error saving announcement: " + err.message + "\nDid you change your Realtime Database rules to true?");
           });
       });
 
