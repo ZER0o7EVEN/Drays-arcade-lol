@@ -77,21 +77,25 @@
         --theme-accent: 255 180 0;
       }
 
-      /* RAINBOW MODE ANIMATION */
-      @keyframes rainbow-cycle {
-        0% { filter: hue-rotate(0deg); }
-        50% { filter: hue-rotate(180deg); }
-        100% { filter: hue-rotate(360deg); }
+      /* === GLOBAL RAINBOW NUKE === */
+      @keyframes rainbow-nuke {
+        0% { filter: hue-rotate(0deg) saturate(200%); }
+        50% { filter: hue-rotate(180deg) saturate(500%); }
+        100% { filter: hue-rotate(360deg) saturate(200%); }
       }
       
-      .rainbow-active {
-        animation: rainbow-cycle 3s linear infinite !important;
+      html.rainbow-active {
+        animation: rainbow-nuke 2s linear infinite !important;
       }
       
-      /* Ensure the iframe keeps normal colors if you want, 
-         but user requested "every things rainbow", so we leave it affected.
-         If you want games to look normal, uncomment below: */
-      /* iframe { filter: hue-rotate(0deg) !important; } */
+      /* Make sure it hits scrollbars and fixed elements too */
+      html.rainbow-active body,
+      html.rainbow-active iframe,
+      html.rainbow-active div,
+      html.rainbow-active canvas {
+        /* Forces hardware acceleration to handle the heavy filter */
+        transform: translateZ(0); 
+      }
     </style>
 
     <!-- Config -->
@@ -517,7 +521,7 @@
                   <div class="relative z-10 flex items-center justify-between">
                     <div>
                         <span class="text-theme-text font-bold text-lg block mb-1">Rainbow Party Mode</span>
-                        <span class="text-theme-muted text-xs block">Cycles colors for EVERY user instantly.</span>
+                        <span class="text-theme-muted text-xs block">Cycles ALL COLORS for EVERY user instantly.</span>
                     </div>
                     <button id="btn-admin-rainbow" class="px-6 py-3 bg-gradient-to-r from-red-500 via-green-500 to-blue-500 text-white font-bold rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(255,255,255,0.3)]">
                         Turn On
@@ -688,10 +692,14 @@
         // Listen for Rainbow Mode
         database.ref('siteSettings/rainbowMode').on('value', (snapshot) => {
             const isRainbow = snapshot.val();
+            
+            // TARGET HTML TO NUKE EVERYTHING
+            const root = document.documentElement; 
+            
             if (isRainbow === true) {
-                document.body.classList.add('rainbow-active');
+                root.classList.add('rainbow-active');
             } else {
-                document.body.classList.remove('rainbow-active');
+                root.classList.remove('rainbow-active');
             }
             
             // Update admin button state if user is currently in admin view
